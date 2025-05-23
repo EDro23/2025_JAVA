@@ -9,16 +9,8 @@ public static final double TRANSACTION_FEE = 2.0;
 private int transactionCount;
 
     /**
-     * Create an account with a balance of 0
-     */
-    public ChequingAccount() {
-        super();
-        transactionCount = 0;
-    }
-
-    /**
      * Create an account with a initial balance of 0
-     * @param balance
+     * @param balance The balance of the Chequing Account
      */
     public ChequingAccount(double balance) {
         super(balance);
@@ -26,8 +18,8 @@ private int transactionCount;
     }
 
     /**
-     * Depost an amunt to the account
-     * @param amount
+     * Depost an amount to the account
+     * @param amount The amount to deposit to the Chequing Account
      */
     @Override
     public void deposit(double amount) {
@@ -43,17 +35,15 @@ private int transactionCount;
     public void withdraw(double amount) {
         super.withdraw(amount);
         transactionCount++;
+        if (transactionCount > FREE_TRANSACTIONS) {
+            chargeFees();
+        }
     }
 
     /**
      * Charge fees method for charging the fees at the end of the period
      */
     public void chargeFees() {
-        int extraTransactions = transactionCount - FREE_TRANSACTIONS;
-        if (extraTransactions > 0) {
-            double totalFee = extraTransactions * TRANSACTION_FEE;
-            super.withdraw(totalFee);
-        }
-        transactionCount = 0;
+        this.balance -= TRANSACTION_FEE;
     }
 }

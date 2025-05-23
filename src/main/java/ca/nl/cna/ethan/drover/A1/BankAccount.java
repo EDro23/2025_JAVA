@@ -5,7 +5,7 @@ package ca.nl.cna.ethan.drover.A1;
  */
 public class BankAccount {
 
-    private double balance;
+    protected double balance;
 
     /**
      * Create an account with no initial balance
@@ -70,13 +70,12 @@ public class BankAccount {
     /**
      * Transfer funds from source bank account to destination
      * @param destination Destination for funds
-     * @param source source of funds
      * @param amount amount being transferred
      */
-    public static void transfer(BankAccount destination, BankAccount source, double amount) {
-        if(amount > 0 && source.balance >= amount) {
-            source.withdraw(amount);
-            destination.deposit(amount);
+    public void transfer(BankAccount destination, double amount) {
+        if(amount > 0 && this.balance >= amount) {
+            this.balance -= amount;
+            destination.balance += amount;
         }
     }
 }
