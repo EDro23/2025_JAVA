@@ -60,7 +60,7 @@ public class BankAccount {
      * @param destination source of the account to send to
      * @param amount amount being sent to the destination
      */
-    public void transferTo(BankAccount destination, double amount) {
+    private void transferTo(BankAccount destination, double amount) {
         if (amount > 0 && this.balance >= amount) {
             this.balance -= amount;
             destination.deposit(amount);

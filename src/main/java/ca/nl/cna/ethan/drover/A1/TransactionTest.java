@@ -62,6 +62,12 @@ public class TransactionTest {
         // Changing interest of Savings Account to 5%
         ethanSavings.changeInterest(5);
 
+        // Charge fees to the Chequing Account
+        System.out.println("");
+        droverChequing.chargeFees();
+        System.out.println("\nCharging the fees to the account");
+        System.out.printf("New Chequing Balance: %.2f",droverChequing.getBalance());
+
         // Adding interest to the savings account with the new interest rate
         System.out.println("");
         ethanSavings.addInterest(ethanSavings.getInterestRate());

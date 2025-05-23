@@ -35,15 +35,16 @@ private int transactionCount;
     public void withdraw(double amount) {
         super.withdraw(amount);
         transactionCount++;
-        if (transactionCount > FREE_TRANSACTIONS) {
-            chargeFees();
-        }
     }
 
     /**
      * Charge fees method for charging the fees at the end of the period
      */
     public void chargeFees() {
-        this.balance -= TRANSACTION_FEE;
+        if(transactionCount > FREE_TRANSACTIONS) {
+            this.balance -= TRANSACTION_FEE;
+        }
+        transactionCount = 0;
+
     }
 }
