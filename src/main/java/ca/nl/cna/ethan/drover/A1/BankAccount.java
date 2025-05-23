@@ -1,7 +1,7 @@
 package ca.nl.cna.ethan.drover.A1;
 
 /**
- * Parent class for all classes
+ * Parent class for all bank account classes
  */
 public class BankAccount {
 
@@ -21,13 +21,15 @@ public class BankAccount {
      */
     public BankAccount(double balance) {
         if (balance < 0) {
+            this.balance = 0;
+        } else {
             this.balance = balance;
         }
     }
 
     /**
      * Get the balance of the account
-     * @return
+     * @return balance of account
      */
     public double getBalance() {
         return balance;
@@ -35,17 +37,17 @@ public class BankAccount {
 
     /**
      * Deposit money into the account
-     * @param amount
+     * @param amount amount to be deposited to account
      */
     public void deposit(double amount) {
-        if (amount < 0) {
+        if (amount > 0) {
             this.balance += amount;
         }
     }
 
     /**
      * Withdraw money from account
-     * @param amount
+     * @param amount amount to withdraw from account
      */
     public void withdraw(double amount) {
         if (amount >0 && this.balance >= amount) {
@@ -55,8 +57,8 @@ public class BankAccount {
 
     /**
      * Transfer to another account
-     * @param destination
-     * @param amount
+     * @param destination source of the account to send to
+     * @param amount amount being sent to the destination
      */
     public void transferTo(BankAccount destination, double amount) {
         if (amount > 0 && this.balance >= amount) {
@@ -67,7 +69,7 @@ public class BankAccount {
 
     /**
      * Transfer funds from source bank account to destination
-     * @param destination Destinaion for funds
+     * @param destination Destination for funds
      * @param source source of funds
      * @param amount amount being transferred
      */

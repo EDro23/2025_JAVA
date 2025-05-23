@@ -35,16 +35,25 @@ private int transactionCount;
         transactionCount++;
     }
 
+    /**
+     * Withdraw from the Chequing account and add one to the transaction count
+     * @param amount amount to withdraw from account
+     */
     @Override
     public void withdraw(double amount) {
         super.withdraw(amount);
         transactionCount++;
-        if(transactionCount >= FREE_TRANSACTIONS) {
-            chargeFees();
-        }
     }
 
+    /**
+     * Charge fees method for charging the fees at the end of the period
+     */
     public void chargeFees() {
-
+        int extraTransactions = transactionCount - FREE_TRANSACTIONS;
+        if (extraTransactions > 0) {
+            double totalFee = extraTransactions * TRANSACTION_FEE;
+            super.withdraw(totalFee);
+        }
+        transactionCount = 0;
     }
 }
