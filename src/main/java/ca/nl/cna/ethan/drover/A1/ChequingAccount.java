@@ -45,6 +45,5 @@ private int transactionCount;
             this.balance -= TRANSACTION_FEE;
         }
         transactionCount = 0;
-
     }
 }
