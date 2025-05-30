@@ -1,80 +1,74 @@
 package ca.nl.cna.ethan.drover.A1;
 
-import java.sql.SQLOutput;
-
-/**
- * Class for testing the Chequing Account and Savings Account
- */
 public class TransactionTest {
 
     public static void main(String[] args) {
-        System.out.println("Bank Account");
+        System.out.println("Bank Account\n");
 
-        SavingsAccount ethanSavings = new SavingsAccount(0,3);
 
-        ChequingAccount droverChequing = new ChequingAccount(0);
-
-        // Starting Balance
-        System.out.printf("\nStarting Savings Balance: %.2f",ethanSavings.getBalance());
-        System.out.printf("\nSarting Chequing Balance: %.2f",droverChequing.getBalance());
-        System.out.println("");
-
-        // Deposit 5000
-        ethanSavings.deposit(5000);
-        System.out.printf("\nDeposited 5000 into Savings Account \nNew Savings Balance: %.2f",ethanSavings.getBalance());
-
-        // Adding interest
-        System.out.println("");
-        System.out.println("\nAdding Interest 3% to Savings Account");
-        ethanSavings.addInterest(ethanSavings.getInterestRate());
-        System.out.printf("New Savings Balance: %.2f",ethanSavings.getBalance());
-
-        // Transferring $1000 into Chequing Account
-        System.out.println("");
-        System.out.println("\nTransfer $1000 To the Chequing Account from Savings Account");
-        ethanSavings.transfer(droverChequing,1000);
-        System.out.printf("New Chequing Balance: %.2f",droverChequing.getBalance());
-
-        // Withdraw 200 from Chequing Account
-        System.out.println("");
-        System.out.println("\nWithdrawing $200 from the Chequing Account");
-        droverChequing.withdraw(200);
-        System.out.printf("New Chequing Balance: %.2f",droverChequing.getBalance());
-
-        // Withdraw 400 from Cheqing Account
-        System.out.println("");
-        System.out.println("\nWithdrawing $400 from the Chequing Account");
-        droverChequing.withdraw(400);
-        System.out.printf("New Chequing Balance: %.2f",droverChequing.getBalance());
-
-        // Withdraw 300 from Chequing Account
-        System.out.println("");
-        System.out.println("\nWithdrawing $300 from the Chequing Account");
-        droverChequing.withdraw(300);
-        System.out.printf("New Chequing Balance: %.2f",droverChequing.getBalance());
-
-        // Withdraw 50 from Chequing Account
-        System.out.println("");
-        System.out.println("\nWithdrawing $50 from the Chequing Account");
-        droverChequing.withdraw(50);
-        System.out.printf("New Chequing Balance: %.2f",droverChequing.getBalance());
-
-        // Changing interest of Savings Account to 5%
-        ethanSavings.changeInterest(5);
-
-        // Charge fees to the Chequing Account
-        System.out.println("");
-        droverChequing.chargeFees();
-        System.out.println("\nCharging the fees to the account");
-        System.out.printf("New Chequing Balance: %.2f",droverChequing.getBalance());
-
-        // Adding interest to the savings account with the new interest rate
-        System.out.println("");
-        ethanSavings.addInterest(ethanSavings.getInterestRate());
-
-        System.out.println("");
-        System.out.printf("Final Savings Balance: %.2f",ethanSavings.getBalance());
-        System.out.println("");
-        System.out.printf("Final Chequing Balance: %.2f",droverChequing.getBalance());
+        // 1. Test: Creating ChequingAccount with negative balance (should throw InvalidAccountActionException)
+        System.out.println("Trying to create a account with negative amount");
+        try {
+            ChequingAccount invalidAccount = new ChequingAccount(-50);
+            System.out.println("ERROR: Initial account balance cannot be negative");
+        } catch (InvalidAccountActionException error) {
+            System.out.println("Exception: " + error.getMessage());
         }
+
+        // Creating a valid Chequing Account
+        ChequingAccount droverChequing = null;
+        try {
+            droverChequing = new ChequingAccount(1000);
+            System.out.println("Created a Chequing Account with balance 1000");
+        } catch (InvalidAccountActionException e) {
+            System.out.println("Unexpected exception creating account: " + e.getMessage());
+        }
+
+        // 2. Testing depositing a negative amount to the chequing account
+        try {
+            System.out.println("\nAttempting to deposit -100");
+            droverChequing.deposit(-100);
+            System.out.println("ERROR: Deposited negative amount (should NOT happen)");
+        } catch (IllegalArgumentException error) {
+            System.out.println("Exception: " + error.getMessage());
+        }
+
+        // 3. Test: Withdraw zero or negative amount
+        try {
+            System.out.println("\nAttempting to withdraw 0");
+            droverChequing.withdraw(0);
+            System.out.println("ERROR: Withdraw zero amount (should NOT happen)");
+        } catch (IllegalArgumentException error) {
+            System.out.println("Exception: " + error.getMessage());
+        }
+
+        try {
+            System.out.println("\nAttempting to withdraw -50");
+            droverChequing.withdraw(-50);
+            System.out.println("ERROR: Withdraw negative amount (should NOT happen)");
+        } catch (IllegalArgumentException error) {
+            System.out.println("Exception: " + error.getMessage());
+        }
+
+        // 4. Test: Withdraw more than balance (insufficient funds)
+        try {
+            System.out.println("\nAttempting to withdraw 2000 (more than balance)");
+            droverChequing.withdraw(2000);
+            System.out.println("ERROR: Withdrawn more than balance (should NOT happen)");
+        } catch (IllegalArgumentException error) {
+            System.out.println("Exception: " + error.getMessage());
+        }
+
+        // Normal deposit and withdraw that should work
+        System.out.println("\nDepositing 500");
+        droverChequing.deposit(500);
+        System.out.printf("Balance after deposit: %.2f\n", droverChequing.getBalance());
+
+        System.out.println("\nWithdrawing 300");
+        droverChequing.withdraw(300);
+        System.out.printf("Balance after withdrawal: %.2f\n", droverChequing.getBalance());
+
+        // Final balance print
+        System.out.printf("\nFinal Chequing Balance: %.2f\n", droverChequing.getBalance());
     }
+}

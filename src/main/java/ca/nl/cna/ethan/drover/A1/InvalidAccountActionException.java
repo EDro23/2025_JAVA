@@ -2,12 +2,10 @@ package ca.nl.cna.ethan.drover.A1;
 
 public class InvalidAccountActionException extends Exception {
 
-    //TODO Default message
-    public static String DEFAULT_MESSAGE = "Invalid account action";
-
+    private static final String MSG = "The action attempted is not valid!";
 
     public InvalidAccountActionException() {
-        super(DEFAULT_MESSAGE);
+        super(MSG);
     }
 
     public InvalidAccountActionException(String message) {
@@ -19,8 +17,6 @@ public class InvalidAccountActionException extends Exception {
     }
 
     public InvalidAccountActionException(Throwable cause) {
-        super(DEFAULT_MESSAGE, cause);
+        super(MSG, cause);
     }
-
-
 }
