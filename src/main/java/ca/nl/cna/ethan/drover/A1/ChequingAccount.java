@@ -1,5 +1,8 @@
 package ca.nl.cna.ethan.drover.A1;
 
+/**
+ * Class for the Chequing Account
+ */
 public class ChequingAccount extends BankAccount {
 
 public static final int FREE_TRANSACTIONS = 3;
@@ -46,7 +49,7 @@ private int transactionCount;
     }
 
     /**
-     * Charge fees method for charging the fees at the end of the period
+     * Charge fees method for charging the fees to the account when it gets above 3 transactions
      */
     public void chargeFees() {
         if(transactionCount > FREE_TRANSACTIONS) {
