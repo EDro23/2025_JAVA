@@ -27,7 +27,7 @@ private int transactionCount;
     }
 
     /**
-     * Depost an amount to the account
+     * Deposit an amount to the account
      * @param amount The amount to deposit to the Chequing Account
      * @throws InvalidAccountActionException if amount being deposited is negative
      */
