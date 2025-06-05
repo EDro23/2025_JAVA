@@ -14,26 +14,24 @@ private int transactionCount;
      * @throws InvalidAccountActionException if the initial balance entered is negative
      */
     public ChequingAccount(double balance) throws InvalidAccountActionException {
-        super(0);
-        if (balance < 0) {
-            throw new InvalidAccountActionException("Initial balance cannot be negative");
-        }
-        this.balance = balance;
+        super(balance);
+        this.transactionCount = 0;
+    }
+
+    public ChequingAccount()  {
+        super();
         this.transactionCount = 0;
     }
 
     /**
      * Depost an amount to the account
      * @param amount The amount to deposit to the Chequing Account
+     * @throws InvalidAccountActionException if amount being deposited is negative
      */
     @Override
-    public void deposit(double amount) {
-
-        if (amount < 0) {
-            throw new IllegalArgumentException("Amount being deposited cannot be negative");
-        }
-        super.deposit(amount);
-        transactionCount++;
+    public void deposit(double amount) throws InvalidAccountActionException {
+            super.deposit(amount);
+            transactionCount++;
     }
 
     /**
@@ -42,14 +40,7 @@ private int transactionCount;
      * @throws IllegalArgumentException if the number is negative or there isn't enough funds
      */
     @Override
-    public void withdraw(double amount) {
-        if (amount <= 0) {
-            throw new IllegalArgumentException("Withdraw amount must positive");
-        }
-
-        if (amount > this.balance) {
-            throw new IllegalArgumentException("Insufficient funds, you cannot overdraw the account");
-        }
+    public void withdraw(double amount) throws InvalidAccountActionException {
         super.withdraw(amount);
         transactionCount++;
     }
