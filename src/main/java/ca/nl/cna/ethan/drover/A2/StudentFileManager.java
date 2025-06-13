@@ -42,6 +42,7 @@ public class StudentFileManager {
                 String balanceStr = parts[6].trim();
 
                 // Validate each field using Student's validation methods
+                // If it is invalid skip to the next line.
                 if (!Student.isValidName(firstName, lastName)) {
                     logStream.printf("Line %d skipped (invalid name): %s %s%n", lineNum, firstName, lastName);
                     continue;

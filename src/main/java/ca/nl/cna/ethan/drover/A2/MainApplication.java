@@ -18,7 +18,6 @@ public class MainApplication {
         List<Student> students = new ArrayList<>();
         StudentFileManager manager = null;
 
-        // Prompt for input filename and load students
         while (true) {
             System.out.print("Enter input file name: ");
             String fileName = scanner.nextLine();
