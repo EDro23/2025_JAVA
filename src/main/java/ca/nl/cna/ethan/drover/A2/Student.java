@@ -12,9 +12,12 @@ package ca.nl.cna.ethan.drover.A2;
  */
 public class Student {
 
+    public static final String NAME_REGEX = "^[a-zA-Z]\\w*$";
     public static final String STUDENTNUM_REGEX = "\\d{9}";
     public static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z0-9.-]+$";
     public static final String PHONE_REGEX = "^(\\(\\d{3}\\)|\\d{3})[-.]?\\d{3}[-.]?\\d{4}$";
+    public static final String CREDITS_REGEX = "^[0-9]+$";
+    public static final String BALANCE_REGEX = "^[0-9]+$";
 
 
     private String firstName;
@@ -157,8 +160,6 @@ public class Student {
         this.balanceOwing = balanceOwing;
     }
 
-    //TODO isValidX Methods
-
     /**
      * Validation for the student number that checks if it is 9 digits in length
      * @param studentNumber The student number being passed in
@@ -186,5 +187,17 @@ public class Student {
      */
     public static boolean isValidPhoneNumber(String phoneNumber) {
         return phoneNumber.matches(PHONE_REGEX);
+    }
+
+    public static boolean isValidName(String firstName, String lastName) {
+        return firstName.matches(NAME_REGEX) && lastName.matches(NAME_REGEX);
+    }
+
+    public static boolean isValidCredits(int credits) {
+        return credits.matches(CREDITS_REGEX);
+    }
+
+    public static boolean isValidBalanceOwing(int balanceOwing) {
+        return balanceOwing.matches(BALANCE_REGEX);
     }
 }

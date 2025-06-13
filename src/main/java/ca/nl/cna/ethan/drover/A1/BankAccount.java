@@ -62,6 +62,8 @@ public class BankAccount {
         )
         {
             throw new InvalidAccountActionException("Cannot deposit more than the bank account amount");
+        } else if (this.balance >= amount) {
+            throw new InvalidAccountActionException("Cannot withdraw more than the bank account amount");
         }
     }
 
