@@ -12,13 +12,11 @@ package ca.nl.cna.ethan.drover.A2;
  */
 public class Student {
 
-    public static final String NAME_REGEX = "^[a-zA-Z]\\w*$";
+    public static final String NAME_REGEX = "^[a-zA-Z]+$";
     public static final String STUDENTNUM_REGEX = "\\d{9}";
     public static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z0-9.-]+$";
     public static final String PHONE_REGEX = "^(\\(\\d{3}\\)|\\d{3})[-.]?\\d{3}[-.]?\\d{4}$";
     public static final String CREDITS_REGEX = "^[0-9]+$";
-    public static final String BALANCE_REGEX = "^[0-9]+$";
-
 
     private String firstName;
     private String lastName;
@@ -26,7 +24,7 @@ public class Student {
     private String email;
     private String phoneNumber;
     private int courseCredits;
-    private int balanceOwing;
+    private double balanceOwing; // Changed to double
 
     /**
      * Student object with the following params
@@ -38,7 +36,7 @@ public class Student {
      * @param courseCredits Course credits belonging to the student
      * @param balanceOwing The balance the student owes
      */
-    public Student(String firstName, String lastName, String studentNumber, String email, String phoneNumber, int courseCredits, int balanceOwing) {
+    public Student(String firstName, String lastName, String studentNumber, String email, String phoneNumber, int courseCredits, double balanceOwing) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.studentNumber = studentNumber;
@@ -148,7 +146,7 @@ public class Student {
      * Get the balance owed by the student
      * @return The balance owed in dollar amount
      */
-    public int getBalanceOwing() {
+    public double getBalanceOwing() {
         return balanceOwing;
     }
 
@@ -156,7 +154,7 @@ public class Student {
      * Set the balance owed by a student
      * @param balanceOwing The balance owed to be set to the student
      */
-    public void setBalanceOwing(int balanceOwing) {
+    public void setBalanceOwing(double balanceOwing) {
         this.balanceOwing = balanceOwing;
     }
 
@@ -189,15 +187,35 @@ public class Student {
         return phoneNumber.matches(PHONE_REGEX);
     }
 
+    /**
+     * Validation for the first name and last name
+     * Must be of letter format without integers
+     * name e.g. John Doe, Jane Doe
+     * @param firstName The first name being passed in
+     * @param lastName The last name being passed in
+     * @return If the first name and last name matches the REGEX
+     */
     public static boolean isValidName(String firstName, String lastName) {
         return firstName.matches(NAME_REGEX) && lastName.matches(NAME_REGEX);
     }
 
+    /**
+     * Validation for the credits
+     * Must be numbers from 0-9
+     * @param credits The credits being passed in
+     * @return If the credits match the REGEX
+     */
     public static boolean isValidCredits(int credits) {
-        return credits.matches(CREDITS_REGEX);
+        return String.valueOf(credits).matches(CREDITS_REGEX);
     }
 
-    public static boolean isValidBalanceOwing(int balanceOwing) {
-        return balanceOwing.matches(BALANCE_REGEX);
+    /**
+     * Validation for the balance owing
+     * Must be a non-negative decimal number
+     * @param balanceOwing The balance owed by the student being passed in
+     * @return If the balance owing is valid (>= 0)
+     */
+    public static boolean isValidBalanceOwing(double balanceOwing) {
+        return balanceOwing >= 0;
     }
 }

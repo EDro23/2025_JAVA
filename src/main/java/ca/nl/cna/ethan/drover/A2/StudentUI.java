@@ -17,7 +17,7 @@ public class StudentUI {
      */
     public static void printStudents(List<Student> students) {
         for (Student student : students) {
-            System.out.printf("%s %s %s %s %s %d $%d.00\n",
+            System.out.printf("%s %s %s %s %s %d %.2f%n\n",
                     student.getFirstName(),
                     student.getLastName(),
                     student.getStudentNumber(),

@@ -1,7 +1,7 @@
 package ca.nl.cna.ethan.drover.A2;
 
 import java.io.File;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -15,21 +15,24 @@ public class MainApplication {
 
         Scanner scanner = new Scanner(System.in);
         File inputFile = null;
-        List<Student> students = null;
+        List<Student> students = new ArrayList<>();
+        StudentFileManager manager = null;
 
+        // Prompt for input filename and load students
         while (true) {
-            System.out.print("Enter file name: ");
+            System.out.print("Enter input file name: ");
             String fileName = scanner.nextLine();
             inputFile = new File(fileName);
 
             try {
                 if (inputFile.exists() && inputFile.isFile()) {
-                    students = StudentFileManager.loadStudents(inputFile, System.out);
+                    manager = new StudentFileManager(fileName);
+                    students = manager.loadStudents(System.out);
                     break;
                 } else {
                     System.out.println("File not found");
                 }
-            } catch (IOException e) {
+            } catch (Exception e) {
                 System.err.println("Error loading file: " + e.getMessage());
             }
         }
@@ -43,7 +46,7 @@ public class MainApplication {
             System.out.println("3. Remove Student");
             System.out.println("4. Modify student");
             System.out.println("5. Save & Exit");
-            System.out.println("Choice: ");
+            System.out.print("Choice: ");
 
             String choice = scanner.nextLine();
 
@@ -66,17 +69,22 @@ public class MainApplication {
             }
         }
 
-        System.out.println("Enter output file name: ");
-        File outputFile = new File(scanner.nextLine());
+        // Prompt for output filename and save students
+        System.out.print("Enter output file name: ");
+        String outputFileName = scanner.nextLine();
+        manager = new StudentFileManager(outputFileName);
 
         try {
-            StudentFileManager.saveStudents(students, outputFile, System.out);
-            System.out.println("Student list saved");
-        } catch (IOException e) {
+            if (manager.saveStudents(new ArrayList<>(students))) {
+                System.out.println("Student list saved");
+            } else {
+                System.err.println("Failed to save student list");
+            }
+        } catch (Exception e) {
             System.err.println("Error saving file: " + e.getMessage());
         }
 
         scanner.close();
-
     }
 }
+
