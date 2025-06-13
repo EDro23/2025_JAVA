@@ -107,7 +107,7 @@ public class StudentFileManager {
     public boolean saveStudents(ArrayList<Student> students) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
             for (Student s : students) {
-                String line = String.format("%s,%s,%s,%s,%s,%d,%.2f",
+                String line = String.format("%s %s %s %s %s %d %.2f",
                         s.getFirstName(),
                         s.getLastName(),
                         s.getStudentNumber(),
