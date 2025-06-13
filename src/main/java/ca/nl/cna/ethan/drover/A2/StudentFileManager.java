@@ -5,12 +5,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * A class that manages Student objects that stores (and retrieves data) in the following format:
- * File structure:
- * Josh Taylor 18298394 josh.taylor@cna.nl.ca 709-555-5555 12 $562.00
- * John Doe 18298395 john.doe@cna.nl.ca 709-555-5555 7 $0.00
- * ....
- * All variables are separated by a space
+ * A class that manages Student objects by storing and retrieving data from a file.
+ * File format: FirstName LastName StudentNumber Email PhoneNumber Credits $Balance.00
  */
 public class StudentFileManager {
 
@@ -48,86 +44,94 @@ public class StudentFileManager {
             String courseCreditsStr = tokens[5];
             String balanceStr = tokens[6];
 
-            // Validate student first & last name
+            // Validate name
             if (!Student.isValidName(firstName, lastName)) {
-                logStream.printf("Line %d skipped (invalid phone number): %s%n", lineNum, firstName + " " + lastName);
+                logStream.printf("Line %d skipped (invalid name): %s %s%n", lineNum, firstName, lastName);
                 continue;
+            }
 
-                // Validate student number (must be 9 digits)
+            // Validate student number
+            try {
                 if (!Student.isValidStudentNumber(Integer.parseInt(studentNumber))) {
                     logStream.printf("Line %d skipped (invalid student number): %s%n", lineNum, studentNumber);
                     continue;
                 }
-
-                // Validate email
-                if (!Student.isValidEmail(email)) {
-                    logStream.printf("Line %d skipped (invalid email): %s%n", lineNum, email);
-                    continue;
-                }
-
-                // Validate phone number
-                if (!Student.isValidPhoneNumber(phoneNumber)) {
-                    logStream.printf("Line %d skipped (invalid phone number): %s%n", lineNum, phoneNumber);
-                    continue;
-                }
-
-                // Validate student credits
-                if (!Student.isValidCredits(Integer.parseInt(courseCreditsStr))) {
-                    logStream.printf("Line %d skipped (invalid phone number): %s%n", lineNum, courseCreditsStr);
-                    continue;
-                }
-
-                // validate student balance owed
-                if (!Student.isValidCredits(Integer.parseInt(balanceStr))) {
-                    logStream.printf("Line %d skipped (invalid phone number): %s%n", lineNum, balanceStr);
-                    continue;
-                }
-
-                try {
-                    int courseCredits = Integer.parseInt(courseCreditsStr);
-                    int balanceOwing = Integer.parseInt(balanceStr.replace("$", "").replace(".00", ""));
-
-                    Student student = new Student(
-                            firstName, lastName, studentNumber, email, phoneNumber, courseCredits, balanceOwing);
-                    students.add(student);
-
-                } catch (NumberFormatException nfe) {
-                    logStream.printf("Line %d skipped (number format issue): %s%n", lineNum, line);
-                }
+            } catch (NumberFormatException e) {
+                logStream.printf("Line %d skipped (invalid number format for student number): %s%n", lineNum, studentNumber);
+                continue;
             }
 
-            br.close();
-
-            return students;
-        }
-
-        /**
-         * Saves students to a file.
-         *
-         * @param students  The list of students to save.
-         * @param file      The file to write to.
-         * @param logStream The PrintStream to log saving status.
-         * @throws IOException If there is an error writing the file.
-         */
-        public static void saveStudents (List < Student > students, File file, PrintStream logStream) throws IOException
-        {
-            PrintWriter writer = new PrintWriter(new FileWriter(file));
-
-            for (Student s : students) {
-                writer.printf(
-                        "%s %s %s %s %s %d $%d.00%n",
-                        s.getFirstName(),
-                        s.getLastName(),
-                        s.getStudentNumber(),
-                        s.getEmail(),
-                        s.getPhoneNumber(),
-                        s.getCourseCredits(),
-                        s.getBalanceOwing()
-                );
+            // Validate email
+            if (!Student.isValidEmail(email)) {
+                logStream.printf("Line %d skipped (invalid email): %s%n", lineNum, email);
+                continue;
             }
 
-            writer.close();
-            logStream.println("Student data successfully saved to: " + file.getAbsolutePath());
+            // Validate phone number
+            if (!Student.isValidPhoneNumber(phoneNumber)) {
+                logStream.printf("Line %d skipped (invalid phone number): %s%n", lineNum, phoneNumber);
+                continue;
+            }
+
+            // Validate course credits
+            int courseCredits;
+            try {
+                courseCredits = Integer.parseInt(courseCreditsStr);
+                if (!Student.isValidCredits(courseCredits)) {
+                    logStream.printf("Line %d skipped (invalid course credits): %s%n", lineNum, courseCreditsStr);
+                    continue;
+                }
+            } catch (NumberFormatException e) {
+                logStream.printf("Line %d skipped (invalid format for course credits): %s%n", lineNum, courseCreditsStr);
+                continue;
+            }
+
+            // Validate balance owing
+            int balanceOwing;
+            try {
+                balanceOwing = Integer.parseInt(balanceStr.replace("$", "").replace(".00", ""));
+                if (!Student.isValidCredits(balanceOwing)) {
+                    logStream.printf("Line %d skipped (invalid balance owing): %s%n", lineNum, balanceStr);
+                    continue;
+                }
+            } catch (NumberFormatException e) {
+                logStream.printf("Line %d skipped (invalid format for balance owing): %s%n", lineNum, balanceStr);
+                continue;
+            }
+
+            // If all validations passed, add the student
+            students.add(new Student(firstName, lastName, studentNumber, email, phoneNumber, courseCredits, balanceOwing));
         }
+
+        br.close();
+        return students;
+    }
+
+    /**
+     * Saves students to a file in formatted text.
+     *
+     * @param students  The list of students to save.
+     * @param file      The file to write to.
+     * @param logStream The PrintStream to log saving status.
+     * @throws IOException If there is an error writing the file.
+     */
+    public static void saveStudents(List<Student> students, File file, PrintStream logStream) throws IOException {
+        PrintWriter writer = new PrintWriter(new FileWriter(file));
+
+        for (Student s : students) {
+            writer.printf(
+                    "%s %s %s %s %s %d $%d.00%n",
+                    s.getFirstName(),
+                    s.getLastName(),
+                    s.getStudentNumber(),
+                    s.getEmail(),
+                    s.getPhoneNumber(),
+                    s.getCourseCredits(),
+                    s.getBalanceOwing()
+            );
+        }
+
+        writer.close();
+        logStream.println("Student data successfully saved to: " + file.getAbsolutePath());
     }
 }
