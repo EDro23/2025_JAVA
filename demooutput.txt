@@ -1,4 +1,0 @@
-Josh Taylor 123456789 josh.taylor@cna.nl.ca 709-555-5555 12 $562.00
-John Doe 987654321 john.doe@cna.nl.ca 709-555-5555 7 $0.00
-Jane Doe 121212121 jane.doe@cna.nl.ca 709-555-5555 15 $0.00
-Demo McGee 123456999 demo@cna.nl.ca 709-555-5555 10 $0.00
